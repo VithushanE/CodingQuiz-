@@ -8,14 +8,19 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet" />
 </head>
 
+<!--Created structure of HTML-->
 <body>
   <div class="container">
     <h1>Quiz Master</h1>
     <div class="alert alert-light">
+
+      <!--Entered the buttons here-->
       <button onClick="finishQuiz(event)" class="float-end">X</button>
-      Timer: <h3 id='countdown'></h3>
+      <h3 id='countdown'> Timer:</h3>
       <button class = "primarybtn" onClick= 'startQuiz()' id="startQuiz">Start Quiz</button>
     </div>
+
+     <!-- Question section -->
     <div id='quizPage' class="card">
       <form id="questionBox" class="card-body">
         <!-- put the questions in here-->
@@ -25,19 +30,26 @@
       </div>
   
     </div>
+
+    <!--Score section-->
     <div id='scorePage' class="card d-none">
-      Score Page
+      <button class= "primarybtn" onClick= 'showResults()' >Click to see Scores!</button>
+      <textarea class = "results"> 
+
+      </textarea>
     </div>
   </div>
 
   
 <script type="text/javascript">
-  // global variables
+  
+  // Identify the  global variables
   var countdownTimer
   var countdownValue 
-  var questionNum
+  var questionNumber
+  var correctAnswer = 0;
 
-
+  // Establish all questions in the quiz 
   var questions = [
     { question: "Who started Linux?", 
       answers: [ "Justin Bieber", "Johnathan Bell", "Linus Torvalds" ],
@@ -53,10 +65,11 @@
   ]
 
 
-
+  // To go from one question to the next 
   function showNextQuestion(){
-    var question = questions[questionNum]
+    var question = questions[questionNumber]
     var questionEl = document.querySelector('#questionBox')
+
     // display question
     questionEl.innerHTML = `
       <div class="alert alert-warning"><h3>${question.question}</h3>
@@ -73,15 +86,16 @@
   function selectAnswer( event,answer ){
     event.preventDefault()
     console.log( `question answer id: ${answer}` )
-    if( answer===questions[questionNum].correct ){
+    if( answer===questions[questionNumber].correct ){
       console.log( `good job! correct answer: ${answer}` )
+      correctAnswer++;
     } else {
-      console.log( `sorry mate, you loose, -10` )
+      console.log( `sorry, you lose, -10` )
       timerDecreaseAndDisplay(10)
-    }
-    questionNum++
+    } 
+    questionNumber++
     // decide to show next question (if more), else end quiz
-    if( questionNum<questions.length )
+    if( questionNumber<questions.length )
       showNextQuestion()
     else
       finishQuiz()
@@ -90,7 +104,7 @@
 
   function timerDecreaseAndDisplay( byValue=1 ){
     // decrease by the value passed in, or if nothing, by 1
-    countdownValue -= byValue
+    countdownValue -= byValue && countdownValue >0
     document.querySelector('#countdown').textContent = countdownValue
     if( countdownValue<1 )
       finishQuiz()
@@ -112,15 +126,21 @@
     // show score page
     showPage( 'scorePage' )
 
+
+    }
     // display the name capture + leaderboard
-    // ...
-  }
+    function showResults(){
+      var result=correctAnswer
+      console.log('You got '+ result + ' right!')
+      document.getElementsByClassName('results')
+      }
+  
 
   // START: 
   // - start timer
   // - show questions
   function startQuiz(){
-    questionNum = 0
+    questionNumber = 0
     countdownValue = 60
     countdownTimer = setInterval( timerDecreaseAndDisplay, 1000 )
     // switch back to the quizPage
@@ -129,7 +149,6 @@
   }
 
 
-// testing 
 </script>
 
 </body>
