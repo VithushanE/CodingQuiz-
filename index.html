@@ -17,9 +17,17 @@
       <!--Entered the buttons here-->
       <button onClick="finishQuiz(event)" class="float-end">X</button>
       <h3 id='countdown'> Timer:</h3>
-      <button class = "primarybtn" onClick= 'startQuiz()' id="startQuiz">Start Quiz</button>
     </div>
 
+    <!-- Enter UserName First -->
+    <h4>Enter User Name below!</h4>
+    <div id="playname" class="card" >
+      <input id="playerNameBox" >
+        <!--enter player name here-->
+    </input>
+    <br>
+    </div>
+    <button class = "primarybtn" onClick= 'startQuiz()' id="startQuiz">Start Quiz</button>
      <!-- Question section -->
     <div id='quizPage' class="card">
       <form id="questionBox" class="card-body">
@@ -34,9 +42,7 @@
     <!--Score section-->
     <div id='scorePage' class="card d-none">
       <button class= "primarybtn" onClick= 'showResults()' >Click to see Scores!</button>
-      <textarea class = "results"> 
-
-      </textarea>
+      <input class= "form-control" id= "userName" type='text' > 
     </div>
   </div>
 
@@ -48,6 +54,7 @@
   var countdownValue 
   var questionNumber
   var correctAnswer = 0;
+  var playName 
 
   // Establish all questions in the quiz 
   var questions = [
@@ -64,6 +71,14 @@
       correct: "DARPA" }
   ]
 
+ // to ensure value is entered for player name 
+  function validateForm() {
+  var x = document.getElementById("playerNameBox").value
+  if (x == "") {
+    alert("Name must be filled out");
+    return false;
+  }
+}
 
   // To go from one question to the next 
   function showNextQuestion(){
@@ -132,7 +147,7 @@
     function showResults(){
       var result=correctAnswer
       console.log('You got '+ result + ' right!')
-      document.getElementsByClassName('results')
+      document.getElementById('userName').value= (playName + ' got '+ result + ' right!')
       }
   
 
@@ -140,6 +155,7 @@
   // - start timer
   // - show questions
   function startQuiz(){
+   playName= document.querySelector('#playerNameBox').value
     questionNumber = 0
     countdownValue = 60
     countdownTimer = setInterval( timerDecreaseAndDisplay, 1000 )
@@ -147,6 +163,7 @@
     showPage( 'quizPage' )
     showNextQuestion()
   }
+
 
 
 </script>
